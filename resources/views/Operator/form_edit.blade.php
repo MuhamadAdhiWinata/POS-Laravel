@@ -1,36 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Operator</title>
-</head>
-<body>
-    <h2>Edit Operator</h2>
+<x-app-layout title="Form Edit Operator">
+    <x-slot name="heading">
+        Form Edit Operator
+    </x-slot>
 
-    @if ($errors->any())
-        <div style="color:red">
-            <ul>
-                @foreach ($errors->all() as $err)
-                    <li>{{ $err }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('operator.update', $encryptedId) }}">
-        @csrf
-        <label>Nama Lengkap:</label><br>
-        <input type="text" name="nama_lengkap" value="{{ $operator->nama_lengkap }}" required><br><br>
-
-        <label>Username:</label><br>
-        <input type="text" name="username" value="{{ $operator->username }}" required><br><br>
-
-        <label>Password (biarkan kosong jika tidak diubah):</label><br>
-        <input type="password" name="password"><br><br>
-
-        <button type="submit">Update</button>
-    </form>
-
-    <br>
-    <a href="{{ route('operator.index') }}">Kembali</a>
-</body>
-</html>
+    <x-form.form-container method="POST" action="{{ route('operator.update', $encryptedId) }}">
+        <x-form.form-input
+            name="nama_lengkap"
+            label="Nama Lengkap"
+            type="text"
+            value="{{ $operator->nama_lengkap }}"
+            placeholder="Masukkan Nama Lengkap"
+            required/>
+        <x-form.form-input
+            name="username"
+            label="Username"
+            type="text"
+            value="{{ $operator->username }}"
+            placeholder="Masukkan Username"
+            required/>
+        <x-form.form-input
+            name="password"
+            label="Password"
+            type="password"
+            placeholder="Masukkan Password"
+            required/>
+        <x-slot name="buttons">
+            <a href="{{ route('operator.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Kembali</a>
+            <x-form.form-button type="submit">Update Operator</x-form.form-button>
+        </x-slot>
+    </x-form.form-container>
+</x-app-layout>

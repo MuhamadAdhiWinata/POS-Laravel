@@ -12,6 +12,7 @@ class Kategori extends Model
     protected $table = 'kategori_barang';
     protected $primaryKey = 'kategori_id';
     protected $fillable = ['nama_kategori'];
+    public $timestamps = false;
 
     // Ambil semua kategori
     public static function getAll()

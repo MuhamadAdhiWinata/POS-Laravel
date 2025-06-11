@@ -1,45 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Form Tambah Barang</title>
-</head>
-<body>
+<x-app-layout title="Form Tambah Barang">
+    <x-slot name="heading">
+        Form Tambah Barang
+    </x-slot>
 
-    <h2>Form Tambah Barang</h2>
+    <x-form.form-container action="{{ route('barang.post') }}" method="POST">
+        <x-form.form-input
+            name="nama_barang"
+            label="Nama Barang"
+            type="text"
+            placeholder="Masukkan nama barang"
+            required />
 
-    @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $err)
-                    <li>{{ $err }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('barang.post') }}" method="POST">
-        @csrf
-
-        <label for="nama_barang">Nama Barang:</label><br>
-        <input type="text" name="nama_barang" id="nama_barang" required><br><br>
-
-        <label for="kategori_id">Kategori:</label><br>
-        <select name="kategori_id" id="kategori_id" required>
+        <x-form.form-input name="kategori_id" label="Kategori" type="select" required>
             <option value="">-- Pilih Kategori --</option>
             @foreach($kategori as $kat)
-                <option value="{{ $kat->kategori_id }}">{{ $kat->nama_kategori }}</option>
+                <option value="{{ $kat->kategori_id }}" {{ old('kategori_id') == $kat->kategori_id ? 'selected' : '' }}>
+                    {{ $kat->nama_kategori }}
+                </option>
             @endforeach
-        </select><br><br>
+        </x-form.form-input>
 
-        <label for="harga">Harga:</label><br>
-        <input type="number" name="harga" id="harga" required><br><br>
+        <x-form.form-input
+            name="harga"
+            label="Harga"
+            type="number"
+            placeholder="0"
+            required />
 
-        <button type="submit">Simpan</button>
-    </form>
-
-    <br>
-    <a href="{{ route('barang.index') }}">Kembali ke Daftar Barang</a>
-
-</body>
-</html>
+        <x-slot name="buttons">
+            <a href="{{ route('barang.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Kembali
+            </a>
+            <x-form.form-button type="submit">
+                Simpan Barang
+            </x-form.form-button>
+        </x-slot>
+    </x-form.form-container>
+</x-app-layout>

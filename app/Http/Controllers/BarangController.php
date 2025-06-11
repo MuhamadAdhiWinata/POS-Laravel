@@ -39,7 +39,7 @@ class BarangController extends Controller
         $kategori = Kategori::all();
 
         if (!$barang) {
-            return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan.');
+            return redirect()->route('barang.index');
         }
 
         return view('barang.form_edit', compact('barang', 'kategori'));
