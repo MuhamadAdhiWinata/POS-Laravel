@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,4 +53,16 @@ Route::middleware('auth:operator')->group(function () {
         Route::post('/update/{id}', [OperatorController::class, 'update'])->name('operator.update');
         Route::get('/delete/{id}', [OperatorController::class, 'delete'])->name('operator.delete');
     });
+
+    //Transaksi
+    Route::prefix('transaksi')->middleware('auth:operator')->group(function () {
+        Route::get('/', [TransaksiController::class, 'create'])->name('transaksi.create');
+        Route::post('/', [TransaksiController::class, 'store'])->name('transaksi.store');
+        Route::get('/selesai', [TransaksiController::class, 'selesaiBelanja'])->name('transaksi.selesai');
+        Route::get('/hapus/{id}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
+        Route::get('/json', [TransaksiController::class, 'index'])->name('transaksi.json'); // opsional
+        Route::get('/laporan', [TransaksiController::class, 'laporan'])->name('transaksi.laporan');
+        Route::post('/laporan', [TransaksiController::class, 'laporanProses'])->name('transaksi.laporan.proses');
+    });
+
 });

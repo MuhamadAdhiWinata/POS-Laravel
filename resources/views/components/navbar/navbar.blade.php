@@ -22,8 +22,8 @@
                         </button>
                         <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none hidden group-hover:block" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                             <div class="py-1 text-sm text-gray-700" role="none">
-                                <a href="/transaksi/form_transaksi" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Form Transaksi</a>
-                                <a href="/transaksi/laporan_transaksi" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Laporan Transaksi</a>
+                                <a href="/transaksi" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Form Transaksi</a>
+                                <a href="/transaksi/laporan" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Laporan Transaksi</a>
                                 <a href="/transaksi/laporan_excel" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Laporan Excel</a>
                                 <a href="/transaksi/laporan_pdf" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Laporan PDF</a>
                             </div>

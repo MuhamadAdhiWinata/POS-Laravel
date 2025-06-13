@@ -24,7 +24,6 @@ class Operator extends Authenticatable
         'password',
     ];
 
-    // ✅ Fungsi tambahan tetap bisa digunakan
     public static function getAll()
     {
         return self::all();
