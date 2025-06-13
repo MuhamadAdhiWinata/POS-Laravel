@@ -2,22 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Operator extends Model
+class Operator extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'operator';
     protected $primaryKey = 'operator_id';
     public $timestamps = false;
+
     protected $fillable = [
         'nama_lengkap',
         'username',
-        'password'
+        'password',
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
+    // ✅ Fungsi tambahan tetap bisa digunakan
     public static function getAll()
     {
         return self::all();

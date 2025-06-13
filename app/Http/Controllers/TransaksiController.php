@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 class TransaksiController
 {
-    public function __invoke()
+    public function index()
     {
-        
+
     }
 }
