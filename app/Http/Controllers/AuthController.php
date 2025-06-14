@@ -21,9 +21,8 @@ class AuthController extends Controller
         if (Auth::guard('operator')->attempt($credentials)) {
             $request->session()->regenerate();
 
-            // Update kolom last_log (format tanggal saja)
             $operator = Auth::guard('operator')->user();
-            $operator->last_log = now()->toDateString(); // simpan sebagai Y-m-d
+            $operator->last_log = now()->toDateString();
             $operator->save();
 
             return redirect()->intended('/');
@@ -37,10 +36,10 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::guard('operator')->logout(); // Logout dari guard operator
+        Auth::guard('operator')->logout();
 
-        $request->session()->invalidate(); // Hapus semua sesi
-        $request->session()->regenerateToken(); // Regenerasi token CSRF
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect()->route('login')->with('status', 'Berhasil logout');
     }
