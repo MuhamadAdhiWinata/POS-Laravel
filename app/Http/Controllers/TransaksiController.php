@@ -8,7 +8,6 @@ use App\Models\Barang;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
@@ -68,17 +67,63 @@ class TransaksiController extends Controller
         ]);
 
         TransaksiDetail::where('status', '0')->update([
-            'transaksi_id' => $transaksi->id,
+            'transaksi_id' => $transaksi->transaksi_id,
             'status' => '1',
         ]);
 
         return redirect()->route('transaksi.create')->with('success', 'Transaksi berhasil diselesaikan.');
     }
 
-    // Endpoint API JSON (opsional)
-    public function index()
+    public function laporan()
     {
-        $data = Transaksi::with(['operator', 'detail.barang'])->get();
-        return response()->json($data);
+        $defaultData = $this->getLaporanData();
+        return view('transaksi.laporan', [
+            'record' => $defaultData['record'],
+            'total' => $defaultData['total'],
+            'tanggal1' => null,
+            'tanggal2' => null
+        ]);
+    }
+
+    public function laporanProses(Request $request)
+    {
+        $request->validate([
+            'tanggal1' => 'required|date',
+            'tanggal2' => 'required|date|after_or_equal:tanggal1'
+        ]);
+
+        $data = $this->getLaporanData($request->tanggal1, $request->tanggal2);
+
+        return view('transaksi.laporan', [
+            'record' => $data['record'],
+            'total' => $data['total'],
+            'tanggal1' => $request->tanggal1,
+            'tanggal2' => $request->tanggal2
+        ]);
+    }
+
+    private function getLaporanData($tanggal1 = null, $tanggal2 = null)
+    {
+        $query = Transaksi::select([
+                'transaksi.transaksi_id',
+                'transaksi.tanggal_transaksi',
+                'operator.nama_lengkap',
+                DB::raw('SUM(transaksi_detail.harga * transaksi_detail.qty) as total')
+            ])
+            ->join('transaksi_detail', 'transaksi_detail.transaksi_id', '=', 'transaksi.transaksi_id')
+            ->join('operator', 'operator.operator_id', '=', 'transaksi.operator_id')
+            ->groupBy('transaksi.transaksi_id', 'transaksi.tanggal_transaksi', 'operator.nama_lengkap');
+
+        if ($tanggal1 && $tanggal2) {
+            $query->whereBetween('transaksi.tanggal_transaksi', [$tanggal1, $tanggal2]);
+        }
+
+        $record = $query->get();
+        $total = $record->sum('total');
+
+        return [
+            'record' => $record,
+            'total' => $total
+        ];
     }
 }
