@@ -24,8 +24,8 @@
                             <div class="py-1 text-sm text-gray-700" role="none">
                                 <a href="/transaksi" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Form Transaksi</a>
                                 <a href="/transaksi/laporan" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Laporan Transaksi</a>
-                                <a href="/transaksi/laporan_excel" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Laporan Excel</a>
-                                <a href="/transaksi/laporan_pdf" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Laporan PDF</a>
+                                <a href="{{ route('transaksi.export.excel') }}"  class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Laporan Excel</a>
+                                <a href="{{route('transaksi.export.pdf')}}" class="block px-4 py-2 hover:bg-gray-100" role="menuitem">Laporan PDF</a>
                             </div>
                         </div>
                     </div>
