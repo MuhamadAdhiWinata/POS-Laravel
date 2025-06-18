@@ -63,6 +63,9 @@ Route::middleware('auth:operator')->group(function () {
         Route::get('/json', [TransaksiController::class, 'index'])->name('transaksi.json'); // opsional
         Route::get('/laporan', [TransaksiController::class, 'laporan'])->name('transaksi.laporan');
         Route::post('/laporan', [TransaksiController::class, 'laporanProses'])->name('transaksi.laporan.proses');
+        Route::get('/export-excel', [TransaksiController::class, 'exportExcel'])->name('transaksi.export.excel');
+        Route::get('/export-pdf', [TransaksiController::class, 'exportPDF'])->name('transaksi.export.pdf');
+
     });
 
 });

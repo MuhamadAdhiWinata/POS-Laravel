@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Operator;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
 use Illuminate\Support\Facades\DB;
+use App\Exports\TransaksiExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransaksiController extends Controller
 {
@@ -36,6 +39,7 @@ class TransaksiController extends Controller
 
         TransaksiDetail::create([
             'barang_id' => $barang->barang_id,
+            'nama_barang' => $barang->nama_barang,
             'qty' => $request->qty,
             'harga' => $barang->harga,
             'status' => '0',
@@ -126,4 +130,24 @@ class TransaksiController extends Controller
             'total' => $total
         ];
     }
+
+    public function exportExcel()
+    {
+        return Excel::download(new TransaksiExport, 'laporan_transaksi.xlsx');
+    }
+
+   public function exportPDF()
+    {
+        $data = $this->getLaporanData(); // Ambil data dari query yang sama dengan view biasa
+
+        $pdf = Pdf::loadView('transaksi.laporan_pdf', [
+            'record' => $data['record'],
+            'total' => $data['total'],
+            'tanggal1' => null,
+            'tanggal2' => null,
+        ])->setPaper('A4', 'landscape');
+
+        return $pdf->download('laporan_transaksi.pdf');
+    }
+
 }
