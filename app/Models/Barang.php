@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Cache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,9 +22,25 @@ class Barang extends Model
     }
 
     // Ambil semua data barang dengan kategori
+    const CACHE_KEY = 'barang:all'; // Gunakan format key yang jelas
     public static function getAllWithKategori()
     {
-        return self::with('kategori')->get();
+        try {
+            return Cache::remember(
+                self::CACHE_KEY,
+                now()->addHours(1), // TTL lebih eksplisit
+                function () {
+                    $data = self::with('kategori')->get();
+                    if ($data->isEmpty()) {
+                        return collect([]); // Hindari cache null
+                    }
+                    return $data;
+                }
+            );
+        } catch (\Exception $e) {
+            \Log::error('Cache error: '.$e->getMessage());
+            return self::with('kategori')->get(); // Fallback ke DB
+        }
     }
 
     public static function createBarang($data)
