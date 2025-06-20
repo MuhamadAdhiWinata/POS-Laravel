@@ -45,6 +45,7 @@ class Barang extends Model
 
     public static function createBarang($data)
     {
+        Cache::forget(self::CACHE_KEY);
         return self::create($data);
     }
 
@@ -55,11 +56,13 @@ class Barang extends Model
 
     public static function updateById($id, $data)
     {
+        Cache::forget(self::CACHE_KEY);
         return self::where('barang_id', $id)->update($data);
     }
 
     public static function deleteById($id)
     {
+        Cache::forget(self::CACHE_KEY);
         return self::where('barang_id', $id)->delete();
     }
 }

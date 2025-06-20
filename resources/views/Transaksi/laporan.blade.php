@@ -24,8 +24,8 @@
                             </div>
                             <div class="flex items-end">
                                 <button type="submit"
-                                    class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
-                                    Proses
+                                    class="bg-gray-600 hover:bg-gray-800 p-2 rounded text-sm text-center text-white font-medium">
+                                    proses
                                 </button>
                             </div>
                         </div>
