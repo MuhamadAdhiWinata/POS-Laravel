@@ -134,13 +134,12 @@ class TransaksiController extends Controller
     }
 
     public function exportExcel()
-{
-    \Log::info("Exporting Excel...");
-    // Simpan ke storage
-    Excel::store(new TransaksiExport, 'laporan_transaksi.xlsx', 'public');
-    // Sekaligus download
-    return Excel::download(new TransaksiExport, 'laporan_transaksi.xlsx');
-}
+    {
+        \Log::info("Dispatching ExportExcelJob...");
+        ExportExcelJob::dispatch();
+        return back()->with('success', 'Laporan sedang diproses. File akan tersimpan di storage.');
+        // return Excel::download(new TransaksiExport, 'laporan_transaksi.xlsx');
+    }
 
    public function exportPDF()
     {
