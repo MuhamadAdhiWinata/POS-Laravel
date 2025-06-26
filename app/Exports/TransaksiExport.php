@@ -10,36 +10,18 @@ class TransaksiExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        return Transaksi::with(['operator', 'details.barang'])
-            ->get()
-            ->map(function ($transaksi) {
-                $rows = [];
-
-                foreach ($transaksi->details as $detail) {
-                    $rows[] = [
-                        'tanggal'     => $transaksi->tanggal_transaksi,
-                        'operator'    => $transaksi->operator->nama_lengkap ?? '-',
-                        'barang'      => $detail->barang->nama_barang ?? '-',
-                        'qty'         => $detail->qty,
-                        'harga'       => $detail->harga,
-                        'subtotal'    => $detail->qty * $detail->harga,
-                    ];
-                }
-
-                return $rows;
-            })
-            ->flatten(1);
+        return Transaksi::with('details.barang', 'operator')->get()->map(function ($trx) {
+            return [
+                'tanggal' => $trx->tanggal_transaksi,
+                'operator' => $trx->operator->nama_lengkap ?? '',
+                'jumlah_item' => $trx->details->sum('qty'),
+                'total_harga' => $trx->details->sum(fn($d) => $d->qty * $d->harga)
+            ];
+        });
     }
 
     public function headings(): array
     {
-        return [
-            'Tanggal Transaksi',
-            'Nama Operator',
-            'Nama Barang',
-            'Qty',
-            'Harga',
-            'Subtotal',
-        ];
+        return ['Tanggal', 'Operator', 'Jumlah Item', 'Total Harga'];
     }
 }

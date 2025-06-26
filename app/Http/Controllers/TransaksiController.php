@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ExportExcelJob;
 use App\Models\Operator;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -133,14 +134,17 @@ class TransaksiController extends Controller
     }
 
     public function exportExcel()
-    {
-        return Excel::download(new TransaksiExport, 'laporan_transaksi.xlsx');
-    }
+{
+    \Log::info("Exporting Excel...");
+    // Simpan ke storage
+    Excel::store(new TransaksiExport, 'laporan_transaksi.xlsx', 'public');
+    // Sekaligus download
+    return Excel::download(new TransaksiExport, 'laporan_transaksi.xlsx');
+}
 
    public function exportPDF()
     {
-        $data = $this->getLaporanData(); // Ambil data dari query yang sama dengan view biasa
-
+        $data = $this->getLaporanData();
         $pdf = Pdf::loadView('transaksi.laporan_pdf', [
             'record' => $data['record'],
             'total' => $data['total'],
